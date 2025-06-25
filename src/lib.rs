@@ -1,0 +1,14 @@
+#[path = "1-slices.rs"]
+pub mod mod_1_slice;
+#[path = "2-newtype.rs"]
+pub mod mod_2_newtype;
+#[path = "3-unsound.rs"]
+pub mod mod_3_unsound;
+#[path = "4-unsafe-trait.rs"]
+pub mod mod_4_unsafe_trait;
+#[path = "5-atomic-id.rs"]
+pub mod mod_5_atomic_id;
+#[path = "6-generativity.rs"]
+pub mod mod_6_generativity;
+#[path = "7-unsound-token.rs"]
+pub mod mod_7_unsound_token;
