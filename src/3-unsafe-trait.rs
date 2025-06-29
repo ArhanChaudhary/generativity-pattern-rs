@@ -50,13 +50,13 @@ pub trait ComposablePermutation: Clone {
 impl ComposablePermutation for Permutation {
     fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
         // ... validate that `mapping` is a valid permutation
-        Ok(Permutation(mapping.into_boxed_slice()))
+        Ok(Self(mapping.into_boxed_slice()))
     }
 
     /// # Safety
     ///
     /// `self`, `b`, and `into` must all be from the same permutation group.
-    unsafe fn compose_into(&self, b: &Permutation, into: &mut Permutation) {
+    unsafe fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
             unsafe {
                 *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));

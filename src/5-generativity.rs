@@ -46,10 +46,10 @@ pub struct Permutation<'id>(Box<[usize]>, Id<'id>);
 impl<'id> Permutation<'id> {
     pub(crate) fn from_mapping(mapping: Vec<usize>, id: Id<'id>) -> Result<Self, &'static str> {
         // ... validate that `mapping` is a valid permutation
-        Ok(Permutation(mapping.into_boxed_slice(), id))
+        Ok(Self(mapping.into_boxed_slice(), id))
     }
 
-    pub fn compose_into(&self, b: &Permutation<'id>, into: &mut Permutation<'id>) {
+    pub fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
             unsafe {
                 *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
@@ -57,7 +57,7 @@ impl<'id> Permutation<'id> {
         }
     }
 
-    pub fn compose(&self, b: &Permutation<'id>) -> Permutation<'id> {
+    pub fn compose(&self, b: &Self) -> Self {
         let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result);
         result

@@ -56,26 +56,31 @@ impl<Tok> Permutation<Tok> {
 
 #[macro_export]
 macro_rules! new_perm_group {
-    ($($args:tt)*) => {
+    ($len:expr, $mappings:expr) => {{
+        let len = $len;
+        let mappings = $mappings;
+        struct InvariantToken;
+        // SAFETY: private API, only used in this macro
         unsafe {
-            struct InvariantToken;
-            $crate::mod_6_unsound_token::PermGroup::<InvariantToken>::new($($args)*)
+            $crate::mod_6_unsound_token::PermGroup::<InvariantToken>::new(len, mappings)
         }
-    }
+    }};
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
     #[test]
-    fn test_permutation() {
-        let first = (3, vec![vec![2, 0, 1]]);
-        let second = (4, vec![vec![1, 2, 0, 3]]);
-        let mut perm_groups = vec![];
-        for args in [first, second] {
-            perm_groups.push(new_perm_group!(args.0, args.1).unwrap());
-        }
-        perm_groups[1].base_permutations()[0].compose(&perm_groups[0].base_permutations()[0]);
+    fn unsound() {
+        let first = (4, vec![vec![1, 2, 0, 3]]);
+        let second = (3, vec![vec![2, 0, 1]]);
+
+        let perm_groups = [first, second]
+            .into_iter()
+            .map(|(len, mappings)| new_perm_group!(len, mappings).unwrap())
+            .collect::<Vec<_>>();
+        let first_perm = &perm_groups[0].base_permutations()[0];
+        let second_perm = &perm_groups[1].base_permutations()[0];
+
+        first_perm.compose(second_perm); // No compile error, UB!
     }
 }

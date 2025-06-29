@@ -43,17 +43,13 @@ impl PermGroup {
 pub struct Permutation(Box<[usize]>, u64);
 
 impl Permutation {
-    pub(crate) fn from_mapping(mapping: Vec<usize>, id: u64) -> Result<Permutation, &'static str> {
+    pub(crate) fn from_mapping(mapping: Vec<usize>, id: u64) -> Result<Self, &'static str> {
         // ... validate that `mapping` is a valid permutation
         // that is a member of this group
         Ok(Permutation(mapping.into_boxed_slice(), id))
     }
 
-    pub fn compose_into(
-        &self,
-        b: &Permutation,
-        into: &mut Permutation,
-    ) -> Result<(), &'static str> {
+    pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {
         if self.1 != b.1 || self.1 != into.1 {
             return Err("Permutations must come from the same group");
         }
@@ -65,7 +61,7 @@ impl Permutation {
         Ok(())
     }
 
-    pub fn compose(&self, b: &Permutation) -> Result<Permutation, &'static str> {
+    pub fn compose(&self, b: &Self) -> Result<Self, &'static str> {
         let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result)?;
         Ok(result)

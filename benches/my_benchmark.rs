@@ -10,9 +10,17 @@ pub fn bench_compose_permutations(c: &mut Criterion) {
     let mut group = c.benchmark_group("Compose permutations");
 
     group.bench_function("1-slices", |b| {
-        let mut into = [0; 15];
+        let mut into = [0; PERM_A.len()];
+        let mut seen_a = vec![false; PERM_A.len()];
+        let mut seen_b = vec![false; PERM_B.len()];
         b.iter(|| {
-            mod_1_slice::compose_into(black_box(&PERM_A), black_box(&PERM_B), black_box(&mut into))
+            mod_1_slice::compose_into(
+                black_box(&PERM_A),
+                black_box(&PERM_B),
+                black_box(&mut into),
+                black_box(&mut seen_a),
+                black_box(&mut seen_b),
+            )
         })
     });
     group.bench_function("2-newtype", |b| {
@@ -56,7 +64,7 @@ pub fn bench_compose_permutations(c: &mut Criterion) {
         let perm_a = &perm_group.base_permutations()[0];
         let perm_b = &perm_group.base_permutations()[1];
         let mut into = perm_a.compose(perm_b);
-        b.iter(|| black_box(perm_a).compose_into(black_box(perm_b), black_box(&mut into)))
+        b.iter(|| black_box(perm_a).compose_into(black_box(perm_b), black_box(&mut into)));
     });
 
     group.finish();

@@ -6,11 +6,7 @@ impl Permutation {
         Ok(Permutation(mapping.into_boxed_slice()))
     }
 
-    pub fn compose_into(
-        &self,
-        b: &Permutation,
-        into: &mut Permutation,
-    ) -> Result<(), &'static str> {
+    pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {
         if self.0.len() != into.0.len() || b.0.len() != into.0.len() {
             return Err("Permutations must have the same length");
         }
@@ -22,8 +18,8 @@ impl Permutation {
         Ok(())
     }
 
-    pub fn compose(&self, b: &Permutation) -> Result<Permutation, &'static str> {
-        let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice());
+    pub fn compose(&self, b: &Self) -> Result<Self, &'static str> {
+        let mut result = Self(vec![0; self.0.len()].into_boxed_slice());
         self.compose_into(b, &mut result)?;
         Ok(result)
     }
