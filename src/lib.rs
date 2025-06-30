@@ -12,18 +12,13 @@ pub mod mod_5_generativity;
 pub mod mod_6_unsound_token;
 
 fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {
-    let length = mapping.len();
-    // TODO
-    if mapping.len() != length {
-        return Err("Mapping length does not match the expected permutation length");
-    }
-    let mut seen = vec![false; length];
+    let mut seen = vec![false; mapping.len()];
     for &index in mapping {
-        if index >= length {
-            return Err("Mapping contains an index out of bounds");
-        }
-        if seen[index] {
-            return Err("Mapping contains duplicate indices");
+        if *seen
+            .get(index)
+            .ok_or("Permutation contains an element greater than the length")?
+        {
+            return Err("Permutation contains duplicate elements");
         }
         seen[index] = true;
     }

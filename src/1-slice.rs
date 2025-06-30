@@ -17,7 +17,7 @@ pub fn compose_into(
             .get(b_value)
             .ok_or("B contains an element greater than the length")?
         {
-            return Err("B contains repeated elements");
+            return Err("B contains duplicate elements");
         }
         seen_b[b_value] = true;
 
@@ -26,7 +26,7 @@ pub fn compose_into(
             .get(a_value)
             .ok_or("A contains an element greater than the length")?
         {
-            return Err("A contains repeated elements");
+            return Err("A contains duplicate elements");
         }
         seen_a[a_value] = true;
 
