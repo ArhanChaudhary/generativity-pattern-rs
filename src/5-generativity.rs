@@ -1,5 +1,10 @@
+use crate::{validate_permutation, validate_permutation_group_membership};
 use generativity::{Guard, Id};
 
+/// Permutation composition within the same permutation upholds
+/// the group membership invariant; thus, callers can assume
+/// `Permutation::compose` produces another permutation in this
+/// group.
 pub struct PermGroup<'id> {
     base_permutation_length: usize,
     base_permutations: Vec<Permutation<'id>>,
@@ -12,17 +17,16 @@ impl<'id> PermGroup<'id> {
         base_permutation_mappings: Vec<Vec<usize>>,
         guard: Guard<'id>,
     ) -> Result<Self, &'static str> {
-        // ... validate that each mapping is a valid
-        // permutation of the given length
-        // (remember that permutations can only be composed
-        // if they have the same length)
+        for mapping in &base_permutation_mappings {
+            validate_permutation(mapping)?;
+        }
         let id = guard.into();
         Ok(Self {
             base_permutation_length,
             base_permutations: base_permutation_mappings
                 .into_iter()
-                .map(|mapping| Permutation::from_mapping(mapping, id))
-                .collect::<Result<_, _>>()?,
+                .map(|mapping| Permutation(mapping.into_boxed_slice(), id))
+                .collect(),
             id,
         })
     }
@@ -31,8 +35,18 @@ impl<'id> PermGroup<'id> {
         &self,
         mapping: Vec<usize>,
     ) -> Result<Permutation<'id>, &'static str> {
-        let permutation = Permutation::from_mapping(mapping, self.id)?;
-        // ... validate that `permutation` is a member of this group
+        // SAFETY: the resulting `Permutation` is only used for
+        // composition if it is a member of this permutation
+        // group.
+        let permutation = unsafe { Permutation::from_mapping(mapping, self.id)? };
+        validate_permutation_group_membership(
+            &permutation.0,
+            &self
+                .base_permutations
+                .iter()
+                .map(|p| &*p.0)
+                .collect::<Vec<_>>(),
+        )?;
         Ok(permutation)
     }
 
@@ -44,19 +58,34 @@ impl<'id> PermGroup<'id> {
 pub struct Permutation<'id>(Box<[usize]>, Id<'id>);
 
 impl<'id> Permutation<'id> {
-    pub(crate) fn from_mapping(mapping: Vec<usize>, id: Id<'id>) -> Result<Self, &'static str> {
-        // ... validate that `mapping` is a valid permutation
+    /// # Safety
+    ///
+    /// `Permutation`s with the same `'id` brand must:
+    /// - be valid permutations of the same length
+    /// - uphold any other defined invariants
+    ///
+    /// Callers can safely violate this contract as long as the
+    /// resulting `Permutation` is never used for composition.
+    pub unsafe fn from_mapping(mapping: Vec<usize>, id: Id<'id>) -> Result<Self, &'static str> {
+        validate_permutation(&mapping)?;
         Ok(Self(mapping.into_boxed_slice(), id))
     }
 
+    /// See the note in `compose`.
     pub fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
+            // SAFETY: `self`, `b`, and `into` have the same
+            // lifetime brand. Therefore, they are valid
+            // permutations of the same length that uphold any
+            // defined invariants when composed.
             unsafe {
                 *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }
         }
     }
 
+    /// Calling code can safely assume permutation composition
+    /// upholds the invariants defined in `from_mapping`.
     pub fn compose(&self, b: &Self) -> Self {
         let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result);

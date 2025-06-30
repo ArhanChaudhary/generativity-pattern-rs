@@ -181,6 +181,7 @@ version = "0.1.0"
 dependencies = [
  "criterion",
  "generativity",
+ "permutation-rs",
 ]
 
 [[package]]
@@ -259,6 +260,12 @@ name = "oorandom"
 version = "11.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6790f58c7ff633d8771f42965289203411a5e5c68388703c06e14f24770b41e"
+
+[[package]]
+name = "permutation-rs"
+version = "3.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "722fe73b3bd131a2fef3f2dbf8167093e97a1fb40c2e6f5a62be90655d1079d4"
 
 [[package]]
 name = "plotters"

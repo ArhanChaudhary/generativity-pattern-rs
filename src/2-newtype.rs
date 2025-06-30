@@ -1,13 +1,15 @@
+use crate::validate_permutation;
+
 pub struct Permutation(Box<[usize]>);
 
 impl Permutation {
     pub fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
-        // ... validate that `mapping` is a valid permutation
+        validate_permutation(&mapping)?;
         Ok(Permutation(mapping.into_boxed_slice()))
     }
 
     pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {
-        if self.0.len() != into.0.len() || b.0.len() != into.0.len() {
+        if self.0.len() != b.0.len() || b.0.len() != into.0.len() {
             return Err("Permutations must have the same length");
         }
         for (into_value, &b_value) in into.0.iter_mut().zip(&b.0) {

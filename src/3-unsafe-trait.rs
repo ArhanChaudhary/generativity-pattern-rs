@@ -1,3 +1,5 @@
+use crate::validate_permutation;
+
 pub struct PermGroup {
     base_permutation_length: usize,
     base_permutations: Vec<Permutation>,
@@ -8,10 +10,9 @@ impl PermGroup {
         base_permutation_length: usize,
         base_permutation_mappings: Vec<Vec<usize>>,
     ) -> Result<Self, &'static str> {
-        // ... validate that each mapping is a valid
-        // permutation of the given length
-        // (remember that permutations can only be
-        // composed if they have the same length)
+        for mapping in &base_permutation_mappings {
+            validate_permutation(mapping)?;
+        }
         Ok(Self {
             base_permutation_length,
             base_permutations: base_permutation_mappings
@@ -49,7 +50,7 @@ pub trait ComposablePermutation: Clone {
 
 impl ComposablePermutation for Permutation {
     fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
-        // ... validate that `mapping` is a valid permutation
+        validate_permutation(&mapping)?;
         Ok(Self(mapping.into_boxed_slice()))
     }
 
