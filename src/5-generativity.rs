@@ -1,10 +1,10 @@
 use crate::{validate_permutation, validate_permutation_group_membership};
 use generativity::{Guard, Id};
 
-/// Permutation composition within the same permutation upholds
-/// the group membership invariant; thus, callers can assume
+/// Permutation composition within the same permutation group
+/// upholds the membership invariant; thus, callers can assume
 /// `Permutation::compose` produces another permutation in this
-/// group.
+/// permutation group.
 pub struct PermGroup<'id> {
     base_permutation_length: usize,
     base_permutations: Vec<Permutation<'id>>,

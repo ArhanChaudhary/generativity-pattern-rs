@@ -9,6 +9,7 @@ pub mod mod_4_atomic_id;
 #[path = "5-generativity.rs"]
 pub mod mod_5_generativity;
 #[path = "6-unsound-token.rs"]
+/// This module is unsound!
 pub mod mod_6_unsound_token;
 
 fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {

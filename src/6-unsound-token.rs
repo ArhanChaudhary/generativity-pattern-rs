@@ -1,10 +1,10 @@
 use crate::validate_permutation;
 use std::marker::PhantomData;
 
-/// Permutation composition within the same permutation upholds
-/// the group membership invariant; thus, callers can assume
+/// Permutation composition within the same permutation group
+/// upholds the membership invariant; thus, callers can assume
 /// `Permutation::compose` produces another permutation in this
-/// group.
+/// permutation group.
 pub struct PermGroup<Tok> {
     base_permutation_length: usize,
     base_permutations: Vec<Permutation<Tok>>,
@@ -99,10 +99,10 @@ mod tests {
         let first = (4, vec![vec![1, 2, 0, 3]]);
         let second = (3, vec![vec![2, 0, 1]]);
 
-        let perm_groups = [first, second]
-            .into_iter()
-            .map(|(len, mappings)| new_perm_group!(len, mappings).unwrap())
-            .collect::<Vec<_>>();
+        let mut perm_groups = vec![];
+        for (len, mappings) in [first, second] {
+            perm_groups.push(new_perm_group!(len, mappings).unwrap());
+        }
         let first_perm = &perm_groups[0].base_permutations()[0];
         let second_perm = &perm_groups[1].base_permutations()[0];
 
