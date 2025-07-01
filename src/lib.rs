@@ -1,3 +1,5 @@
+#![feature(super_let)]
+
 #[path = "1-slice.rs"]
 pub mod mod_1_slice;
 #[path = "2-newtype.rs"]
@@ -11,6 +13,8 @@ pub mod mod_5_generativity;
 #[path = "6-unsound-token.rs"]
 /// This module is unsound!
 pub mod mod_6_unsound_token;
+
+pub mod generative_lifetimes;
 
 fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {
     let mut seen = vec![false; mapping.len()];
