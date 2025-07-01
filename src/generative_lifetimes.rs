@@ -1,10 +1,7 @@
 use std::marker::PhantomData;
 
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Debug)]
-pub struct Id<'id>(PhantomData<fn(&'id ()) -> &'id ()>);
-
-#[derive(Eq, PartialEq, Debug)]
-pub struct Guard<'id>(Id<'id>);
+pub struct Id<'id>(pub PhantomData<fn(&'id ()) -> &'id ()>);
 
 pub struct LifetimeBrand<'id>(PhantomData<&'id Id<'id>>);
 
@@ -18,15 +15,20 @@ impl<'id> Drop for LifetimeBrand<'id> {
     fn drop(&mut self) {}
 }
 
+#[derive(Eq, PartialEq, Debug)]
+pub struct Guard<'id>(pub Id<'id>);
+
+#[macro_export]
 macro_rules! make_guard {
     () => {{
-        super let branded_place = Id(PhantomData);
+        super let branded_place = $crate::generative_lifetimes::Id(std::marker::PhantomData);
         #[allow(unused)]
-        super let lifetime_brand = LifetimeBrand::new(&branded_place);
-        Guard(branded_place)
+        super let lifetime_brand = $crate::generative_lifetimes::LifetimeBrand::new(&branded_place);
+        $crate::generative_lifetimes::Guard(branded_place)
     }};
 }
 
+#[allow(unused)]
 fn generative_lifetime() {
     let id1 = make_guard!();
     let id2 = make_guard!();
