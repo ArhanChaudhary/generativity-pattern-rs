@@ -3,6 +3,9 @@ use std::marker::PhantomData;
 #[derive(Copy, Clone, Ord, PartialOrd, Eq, PartialEq, Hash, Debug)]
 pub struct Id<'id>(PhantomData<fn(&'id ()) -> &'id ()>);
 
+#[derive(Eq, PartialEq, Debug)]
+pub struct Guard<'id>(Id<'id>);
+
 pub struct LifetimeBrand<'id>(PhantomData<&'id Id<'id>>);
 
 impl<'id> LifetimeBrand<'id> {
@@ -20,7 +23,7 @@ macro_rules! make_guard {
         super let branded_place = Id(PhantomData);
         #[allow(unused)]
         super let lifetime_brand = LifetimeBrand::new(&branded_place);
-        branded_place
+        Guard(branded_place)
     }};
 }
 
