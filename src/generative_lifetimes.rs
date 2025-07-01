@@ -27,14 +27,9 @@ macro_rules! make_guard {
     }};
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn generative_lifetime() {
-        let id1 = make_guard!();
-        let id2 = make_guard!();
-        // uncomment this and it fails
-        // assert_eq!(id1, id2);
-    }
+fn generative_lifetime() {
+    let id1 = make_guard!();
+    let id2 = make_guard!();
+    // uncomment this and it fails
+    // assert_eq!(id1, id2);
 }
