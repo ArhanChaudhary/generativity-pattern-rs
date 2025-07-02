@@ -15,6 +15,7 @@ pub mod mod_5_generativity;
 pub mod mod_6_unsound_token;
 
 pub mod generative_lifetimes;
+pub mod branded_vec;
 
 fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {
     let mut seen = vec![false; mapping.len()];
