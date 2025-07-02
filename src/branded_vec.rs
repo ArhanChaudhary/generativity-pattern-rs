@@ -1,44 +1,33 @@
-use std::marker::PhantomData;
+use generativity::{Guard, Id, make_guard};
 
 /// The Branded Vector Example from §2 of the paper.
 /// Run from the `./ghostcell-examples` directory, with the command
 /// `cargo run --example branded_vec`.
 
-#[derive(Clone, Copy, Default)]
-struct InvariantLifetime<'id>(PhantomData<*mut &'id ()>);
-
-impl<'id> InvariantLifetime<'id> {
-    #[inline]
-    fn new() -> InvariantLifetime<'id> {
-        InvariantLifetime(PhantomData)
-    }
-}
-
 struct BrandedVec<'id, T> {
     inner: Vec<T>,
-    _marker: InvariantLifetime<'id>,
+    id: Id<'id>,
 }
 
 #[derive(Clone, Copy)]
 struct BrandedIndex<'id> {
     idx: usize,
-    _marker: InvariantLifetime<'id>,
+    id: Id<'id>,
 }
 
 impl<'id, T> BrandedVec<'id, T> {
-    pub fn new<R>(inner: Vec<T>, f: impl for<'id2> FnOnce(BrandedVec<'id2, T>) -> R) -> R {
-        let branded_vec = BrandedVec {
+    pub fn new(inner: Vec<T>, guard: Guard<'id>) -> BrandedVec<'id, T> {
+        BrandedVec {
             inner,
-            _marker: InvariantLifetime::new(),
-        };
-        f(branded_vec)
+            id: guard.into(),
+        }
     }
 
     pub fn get_index(&self, index: usize) -> Option<BrandedIndex<'id>> {
         if index < self.inner.len() {
             Some(BrandedIndex {
                 idx: index,
-                _marker: InvariantLifetime::new(),
+                id: self.id,
             })
         } else {
             None
@@ -56,7 +45,7 @@ impl<'id, T> BrandedVec<'id, T> {
     pub fn push<'a>(&'a mut self, val: T) -> BrandedIndex<'id> {
         let index = BrandedIndex {
             idx: self.inner.len(),
-            _marker: InvariantLifetime::new(),
+            id: self.id,
         };
         self.inner.push(val);
         index
@@ -88,19 +77,21 @@ mod tests {
 
         let vec1: Vec<u8> = vec![10, 11];
         let vec2: Vec<u8> = vec![20, 21];
-        BrandedVec::new(vec1, move |mut bvec1: BrandedVec<u8>| {
-            bvec1.push(12);
-            let i1 = bvec1.push(13);
-            let _idx = bvec1.get_index(0).unwrap();
-            BrandedVec::new(vec2, move |mut bvec2: BrandedVec<u8>| {
-                let i2 = bvec2.push(22);
-                println!("{:?}", bvec2.get(i2)); // No bound check! Prints 22
-                *bvec2.get_mut(i2) -= 1; // No bound check!
-                println!("{:?}", bvec2.get(i2)); // Prints 21
-                println!("{:?}", bvec1.get(i1)); // Prints 13
-                // rejected: i1 is not an index of bvec2
-                // println!("{:?}", bvec2.get(i1));
-            });
-        });
+
+        make_guard!(guard1);
+        let mut bvec1 = BrandedVec::new(vec1, guard1);
+        bvec1.push(12);
+        let i1 = bvec1.push(13);
+        let _idx = bvec1.get_index(0).unwrap();
+
+        make_guard!(guard2);
+        let mut bvec2 = BrandedVec::new(vec2, guard2);
+        let i2 = bvec2.push(22);
+        println!("{:?}", bvec2.get(i2)); // No bound check! Prints 22
+        *bvec2.get_mut(i2) -= 1; // No bound check!
+        println!("{:?}", bvec2.get(i2)); // Prints 21
+        println!("{:?}", bvec1.get(i1)); // Prints 13
+        // rejected: i1 is not an index of bvec2
+        // println!("{:?}", bvec2.get(i1));
     }
 }
