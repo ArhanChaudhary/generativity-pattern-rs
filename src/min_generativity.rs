@@ -21,10 +21,10 @@ pub struct Guard<'id>(pub Id<'id>);
 #[macro_export]
 macro_rules! make_guard {
     () => {{
-        super let branded_place = $crate::generative_lifetimes::Id(std::marker::PhantomData);
+        super let branded_place = $crate::min_generativity::Id(std::marker::PhantomData);
         #[allow(unused)]
-        super let lifetime_brand = $crate::generative_lifetimes::LifetimeBrand::new(&branded_place);
-        $crate::generative_lifetimes::Guard(branded_place)
+        super let lifetime_brand = $crate::min_generativity::LifetimeBrand::new(&branded_place);
+        $crate::min_generativity::Guard(branded_place)
     }};
 }
 

@@ -14,7 +14,7 @@ pub mod mod_5_generativity;
 /// This module is unsound!
 pub mod mod_6_unsound_token;
 
-pub mod generative_lifetimes;
+pub mod min_generativity;
 pub mod branded_vec;
 
 fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {
