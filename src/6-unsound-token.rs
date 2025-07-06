@@ -38,7 +38,14 @@ impl<Tok> PermGroup<Tok> {
         // composition if it is a member of this permutation
         // group.
         let permutation = unsafe { Permutation::from_mapping(mapping)? };
-        validate_permutation(&permutation.0)?;
+        validate_permutation_group_membership(
+            &permutation.0,
+            &self
+                .base_permutations
+                .iter()
+                .map(|p| &*p.0)
+                .collect::<Vec<_>>(),
+        )?;
         Ok(permutation)
     }
 
