@@ -69,7 +69,7 @@ impl Permutation {
     /// resulting `Permutation` is never used for composition.
     pub unsafe fn from_mapping(mapping: Vec<usize>, id: u64) -> Result<Self, &'static str> {
         validate_permutation(&mapping)?;
-        Ok(Permutation(mapping.into_boxed_slice(), id))
+        Ok(Self(mapping.into_boxed_slice(), id))
     }
 
     /// See the note in `compose`.
@@ -92,7 +92,7 @@ impl Permutation {
     /// Calling code can safely assume permutation composition
     /// upholds the invariants defined in `from_mapping`.
     pub fn compose(&self, b: &Self) -> Result<Self, &'static str> {
-        let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice(), self.1);
+        let mut result = Self(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result)?;
         Ok(result)
     }

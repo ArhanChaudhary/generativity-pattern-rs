@@ -43,6 +43,8 @@ pub trait ComposablePermutation: Clone {
     /// `self` and `b` must both be from the same permutation group.
     unsafe fn compose(&self, b: &Self) -> Self {
         let mut result = self.clone();
+        // SAFETY: `self`, `b`, and `result` are all from the same
+        // permutation group.
         unsafe { self.compose_into(b, &mut result) };
         result
     }
@@ -59,6 +61,7 @@ impl ComposablePermutation for Permutation {
     /// `self`, `b`, and `into` must all be from the same permutation group.
     unsafe fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
+            // SAFETY: permutations within the same group can be composed.
             unsafe {
                 *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }

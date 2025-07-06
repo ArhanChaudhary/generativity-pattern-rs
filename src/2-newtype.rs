@@ -5,7 +5,7 @@ pub struct Permutation(Box<[usize]>);
 impl Permutation {
     pub fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
         validate_permutation(&mapping)?;
-        Ok(Permutation(mapping.into_boxed_slice()))
+        Ok(Self(mapping.into_boxed_slice()))
     }
 
     pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {

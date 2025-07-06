@@ -87,7 +87,7 @@ impl<'id> Permutation<'id> {
     /// Calling code can safely assume permutation composition
     /// upholds the invariants defined in `from_mapping`.
     pub fn compose(&self, b: &Self) -> Self {
-        let mut result = Permutation(vec![0; self.0.len()].into_boxed_slice(), self.1);
+        let mut result = Self(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result);
         result
     }
