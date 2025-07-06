@@ -19,7 +19,7 @@ impl PermGroup {
         base_permutation_mappings: Vec<Vec<usize>>,
     ) -> Result<Self, &'static str> {
         for mapping in &base_permutation_mappings {
-            validate_permutation(mapping)?;
+            validate_permutation(mapping, base_permutation_length)?;
         }
         let id = ID.fetch_add(1, Relaxed);
         Ok(Self {
@@ -68,7 +68,7 @@ impl Permutation {
     /// Callers can safely violate this contract as long as the
     /// resulting `Permutation` is never used for composition.
     pub unsafe fn from_mapping(mapping: Vec<usize>, id: u64) -> Result<Self, &'static str> {
-        validate_permutation(&mapping)?;
+        validate_permutation(&mapping, mapping.len())?;
         Ok(Self(mapping.into_boxed_slice(), id))
     }
 

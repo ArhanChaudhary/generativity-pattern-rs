@@ -11,7 +11,7 @@ impl PermGroup {
         base_permutation_mappings: Vec<Vec<usize>>,
     ) -> Result<Self, &'static str> {
         for mapping in &base_permutation_mappings {
-            validate_permutation(mapping)?;
+            validate_permutation(mapping, base_permutation_length)?;
         }
         Ok(Self {
             base_permutation_length,
@@ -35,16 +35,18 @@ pub trait ComposablePermutation: Clone {
 
     /// # Safety
     ///
-    /// `self`, `b`, and `into` must all be from the same permutation group.
+    /// `self`, `b`, and `into` must all be from the same
+    /// permutation group.
     unsafe fn compose_into(&self, b: &Self, into: &mut Self);
 
     /// # Safety
     ///
-    /// `self` and `b` must both be from the same permutation group.
+    /// `self` and `b` must both be from the same permutation
+    /// group.
     unsafe fn compose(&self, b: &Self) -> Self {
         let mut result = self.clone();
-        // SAFETY: `self`, `b`, and `result` are all from the same
-        // permutation group.
+        // SAFETY: `self`, `b`, and `result` are all from the
+        // same permutation group.
         unsafe { self.compose_into(b, &mut result) };
         result
     }
@@ -52,13 +54,10 @@ pub trait ComposablePermutation: Clone {
 
 impl ComposablePermutation for Permutation {
     fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
-        validate_permutation(&mapping)?;
+        validate_permutation(&mapping, mapping.len())?;
         Ok(Self(mapping.into_boxed_slice()))
     }
 
-    /// # Safety
-    ///
-    /// `self`, `b`, and `into` must all be from the same permutation group.
     unsafe fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
             // SAFETY: permutations within the same group can be composed.

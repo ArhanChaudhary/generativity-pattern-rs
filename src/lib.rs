@@ -14,11 +14,14 @@ pub mod mod_5_generativity;
 /// This module is unsound!
 pub mod mod_6_unsound_token;
 
-pub mod min_generativity;
 pub mod branded_vec;
+pub mod min_generativity;
 
-fn validate_permutation(mapping: &[usize]) -> Result<(), &'static str> {
-    let mut seen = vec![false; mapping.len()];
+fn validate_permutation(mapping: &[usize], expected_length: usize) -> Result<(), &'static str> {
+    if mapping.len() != expected_length {
+        return Err("Permutation length does not match expected length");
+    }
+    let mut seen = vec![false; expected_length];
     for &index in mapping {
         if *seen
             .get(index)

@@ -1,4 +1,4 @@
-use crate::validate_permutation;
+use crate::{validate_permutation, validate_permutation_group_membership};
 use std::marker::PhantomData;
 
 /// Permutation composition within the same permutation group
@@ -19,7 +19,7 @@ impl<Tok> PermGroup<Tok> {
         base_permutation_mappings: Vec<Vec<usize>>,
     ) -> Result<Self, &'static str> {
         for mapping in &base_permutation_mappings {
-            validate_permutation(mapping)?;
+            validate_permutation(mapping, base_permutation_length)?;
         }
         Ok(Self {
             base_permutation_length,
@@ -66,7 +66,7 @@ impl<Tok> Permutation<Tok> {
     /// Callers can safely violate this contract as long as the
     /// resulting `Permutation` is never used for composition.
     pub unsafe fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
-        validate_permutation(&mapping)?;
+        validate_permutation(&mapping, mapping.len())?;
         Ok(Self(mapping.into_boxed_slice(), PhantomData))
     }
 
