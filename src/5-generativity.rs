@@ -71,7 +71,7 @@ impl<'id> Permutation<'id> {
         Ok(Self(mapping.into_boxed_slice(), id))
     }
 
-    /// See the note in `compose`.
+    /// See the note in `Permutation::compose`.
     pub fn compose_into(&self, b: &Self, into: &mut Self) {
         for i in 0..into.0.len() {
             // SAFETY: `self`, `b`, and `into` have the same
@@ -85,7 +85,8 @@ impl<'id> Permutation<'id> {
     }
 
     /// Calling code can safely assume permutation composition
-    /// upholds the invariants defined in `from_mapping`.
+    /// upholds the invariants defined in
+    /// `Permutation::from_mapping`.
     pub fn compose(&self, b: &Self) -> Self {
         let mut result = Self(vec![0; self.0.len()].into_boxed_slice(), self.1);
         self.compose_into(b, &mut result);

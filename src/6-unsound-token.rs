@@ -70,7 +70,7 @@ impl<Tok> Permutation<Tok> {
         Ok(Self(mapping.into_boxed_slice(), PhantomData))
     }
 
-    /// See the note in `compose`.
+    /// See the note in `Permutation::compose`.
     pub fn compose_into(&self, b: &Permutation<Tok>, into: &mut Permutation<Tok>) {
         for i in 0..into.0.len() {
             unsafe {
@@ -80,7 +80,8 @@ impl<Tok> Permutation<Tok> {
     }
 
     /// Calling code can safely assume permutation composition
-    /// upholds the invariants defined in `from_mapping`.
+    /// upholds the invariants defined in
+    /// `Permutation::from_mapping`.
     pub fn compose(&self, b: &Permutation<Tok>) -> Permutation<Tok> {
         let mut result = Self(vec![0; self.0.len()].into_boxed_slice(), PhantomData);
         self.compose_into(b, &mut result);
