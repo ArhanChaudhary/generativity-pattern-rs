@@ -4,13 +4,13 @@
 pub mod mod_1_slice;
 #[path = "2-newtype.rs"]
 pub mod mod_2_newtype;
-#[path = "3-unsafe-trait.rs"]
+#[path = "3-unsafe_trait.rs"]
 pub mod mod_3_unsafe_trait;
-#[path = "4-atomic-id.rs"]
+#[path = "4-atomic_id.rs"]
 pub mod mod_4_atomic_id;
 #[path = "5-generativity.rs"]
 pub mod mod_5_generativity;
-#[path = "6-unsound-token.rs"]
+#[path = "6-unsound_token.rs"]
 /// This module is unsound!
 pub mod mod_6_unsound_token;
 
