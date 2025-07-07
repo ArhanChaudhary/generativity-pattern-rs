@@ -1,10 +1,6 @@
 use crate::{validate_permutation, validate_permutation_group_membership};
 use std::marker::PhantomData;
 
-/// Permutation composition within the same permutation group
-/// upholds the membership invariant; thus, callers can assume
-/// `Permutation::compose` produces another permutation in this
-/// permutation group.
 pub struct PermGroup<Tok> {
     base_permutation_length: usize,
     base_permutations: Vec<Permutation<Tok>>,
@@ -30,25 +26,6 @@ impl<Tok> PermGroup<Tok> {
         })
     }
 
-    pub fn permutation_from_mapping(
-        &self,
-        mapping: Vec<usize>,
-    ) -> Result<Permutation<Tok>, &'static str> {
-        // SAFETY: the resulting `Permutation` is only used for
-        // composition if it is a member of this permutation
-        // group.
-        let permutation = unsafe { Permutation::from_mapping(mapping)? };
-        validate_permutation_group_membership(
-            &permutation.0,
-            &self
-                .base_permutations
-                .iter()
-                .map(|p| &*p.0)
-                .collect::<Vec<_>>(),
-        )?;
-        Ok(permutation)
-    }
-
     pub fn base_permutations(&self) -> &[Permutation<Tok>] {
         &self.base_permutations
     }
@@ -57,17 +34,21 @@ impl<Tok> PermGroup<Tok> {
 pub struct Permutation<Tok>(Box<[usize]>, PhantomData<Tok>);
 
 impl<Tok> Permutation<Tok> {
-    /// # Safety
-    ///
-    /// `Permutation`s with the same `Tok` brand must:
-    /// - be valid permutations of the same length
-    /// - uphold any other defined invariants
-    ///
-    /// Callers can safely violate this contract as long as the
-    /// resulting `Permutation` is never used for composition.
-    pub unsafe fn from_mapping(mapping: Vec<usize>) -> Result<Self, &'static str> {
-        validate_permutation(&mapping, mapping.len())?;
-        Ok(Self(mapping.into_boxed_slice(), PhantomData))
+    pub fn from_mapping_and_group(
+        mapping: Vec<usize>,
+        group: &PermGroup<Tok>,
+    ) -> Result<Self, &'static str> {
+        validate_permutation(&mapping, group.base_permutation_length)?;
+        let permutation = Self(mapping.into_boxed_slice(), PhantomData);
+        validate_permutation_group_membership(
+            &permutation.0,
+            &group
+                .base_permutations
+                .iter()
+                .map(|p| &*p.0)
+                .collect::<Vec<_>>(),
+        )?;
+        Ok(permutation)
     }
 
     /// See the note in `Permutation::compose`.
