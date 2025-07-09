@@ -29,7 +29,7 @@ pub fn bench_compose_permutations(c: &mut Criterion) {
         let mut into = perm_a.compose(&perm_b).unwrap();
         b.iter(|| black_box(&perm_a).compose_into(black_box(&perm_b), black_box(&mut into)))
     });
-    group.bench_function("3-unsafe-trait", |b| {
+    group.bench_function("3-unsafe_trait", |b| {
         let perm_group =
             mod_3_unsafe_trait::PermGroup::new(15, vec![PERM_A.to_vec(), PERM_B.to_vec()]).unwrap();
         let perm_a = &perm_group.base_permutations()[0];
@@ -39,7 +39,7 @@ pub fn bench_compose_permutations(c: &mut Criterion) {
             black_box(perm_a).compose_into(black_box(perm_b), black_box(&mut into))
         })
     });
-    group.bench_function("4-atomic-id", |b| {
+    group.bench_function("4-atomic_id", |b| {
         let perm_group =
             mod_4_atomic_id::PermGroup::new(15, vec![PERM_A.to_vec(), PERM_B.to_vec()]).unwrap();
         let perm_a = &perm_group.base_permutations()[0];
@@ -57,7 +57,7 @@ pub fn bench_compose_permutations(c: &mut Criterion) {
         let mut into = perm_a.compose(perm_b);
         b.iter(|| black_box(perm_a).compose_into(black_box(perm_b), black_box(&mut into)))
     });
-    group.bench_function("6-unsound-token", |b| {
+    group.bench_function("6-unsound_token", |b| {
         let perm_group =
             generativity_pattern_rs::new_perm_group!(15, vec![PERM_A.to_vec(), PERM_B.to_vec()])
                 .unwrap();
