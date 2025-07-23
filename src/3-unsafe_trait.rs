@@ -18,7 +18,7 @@ impl PermGroup {
             base_permutations: base_permutation_mappings
                 .into_iter()
                 .map(Permutation::from_mapping)
-                .collect::<Result<_, _>>()?,
+                .collect::<Result<Vec<Permutation>, &'static str>>()?,
         })
     }
 
