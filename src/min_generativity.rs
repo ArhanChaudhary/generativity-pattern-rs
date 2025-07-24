@@ -2,6 +2,15 @@ use std::marker::PhantomData;
 
 pub type Id<'id> = PhantomData<fn(&'id ()) -> &'id ()>;
 
+#[derive(Eq, PartialEq, Debug)]
+pub struct Guard<'id>(pub Id<'id>);
+
+impl<'id> From<Guard<'id>> for Id<'id> {
+    fn from(guard: Guard<'id>) -> Self {
+        guard.0
+    }
+}
+
 pub struct LifetimeBrand<'id>(PhantomData<&'id Id<'id>>);
 
 impl<'id> LifetimeBrand<'id> {
@@ -14,20 +23,11 @@ impl<'id> Drop for LifetimeBrand<'id> {
     fn drop(&mut self) {}
 }
 
-#[derive(Eq, PartialEq, Debug)]
-pub struct Guard<'id>(pub Id<'id>);
-
-impl<'id> From<Guard<'id>> for Id<'id> {
-    fn from(guard: Guard<'id>) -> Self {
-        guard.0
-    }
-}
-
 #[macro_export]
 macro_rules! make_guard {
     // ($name:ident) => {
     //     let branded_place: $crate::min_generativity::Id = std::marker::PhantomData;
-    //     let lifetime_brand = $crate::min_generativity::LifetimeBrand(&branded_place);
+    //     let lifetime_brand = $crate::min_generativity::LifetimeBrand::new(&branded_place);
     //     let $name = $crate::min_generativity::Guard(branded_place);
     // };
     () => {{
