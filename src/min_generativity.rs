@@ -39,12 +39,37 @@ macro_rules! make_guard {
 
 #[cfg(test)]
 mod tests {
+    #![allow(unused)]
+    use super::*;
+    use std::panic::{RefUnwindSafe, UnwindSafe};
+
     #[test]
     fn generative_lifetime() {
-        #![allow(unused)]
         let id1 = make_guard!();
         let id2 = make_guard!();
-        // uncomment this and it fails
+        assert_eq!(id1, id1);
+        assert_eq!(id2, id2);
+        // uncomment this and it doesn't compile
         // assert_eq!(id1, id2);
+    }
+
+    #[test]
+    fn test_oibits() {
+        fn assert_oibits<T>(_: &T)
+        where
+            T: Send + Sync + Unpin + UnwindSafe + RefUnwindSafe,
+        {
+        }
+
+        let a = make_guard!();
+        assert_oibits(&a);
+        let id: Id<'_> = a.into();
+        assert_oibits(&id);
+
+        // const compatible (e.g. const_refs_to_cell, const destructor)
+        const fn _const_id(_: Id<'_>) {}
+        const fn _const_ref_id(_: &'_ Id<'_>) {}
+        const fn _const_guard(_: Guard<'_>) {}
+        const fn _const_ref_guard(_: &'_ Guard<'_>) {}
     }
 }
