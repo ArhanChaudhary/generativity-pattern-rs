@@ -90,7 +90,18 @@ mod tests {
 
         let mut perm_groups = vec![];
         for (len, mappings) in [first, second] {
-            perm_groups.push(new_perm_group!(len, mappings).unwrap());
+            // I expanded the macro to make it easier to understand!
+            // perm_groups.push(new_perm_group!(len, mappings).unwrap());
+
+            perm_groups.push({
+                let len = len;
+                let mappings = mappings;
+                struct InvariantToken;
+                // SAFETY: private API, only used in this macro.
+                unsafe {
+                    crate::mod_6_unsound_token::PermGroup::<InvariantToken>::new(len, mappings)
+                }
+            }.unwrap());
         }
         let first_perm = &perm_groups[0].base_permutations()[0];
         let second_perm = &perm_groups[1].base_permutations()[0];

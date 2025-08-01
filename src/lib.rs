@@ -25,7 +25,7 @@ fn validate_permutation(mapping: &[usize], expected_length: usize) -> Result<(),
     for &index in mapping {
         if *seen
             .get(index)
-            .ok_or("Permutation contains an element greater than the length")?
+            .ok_or("Permutation contains an element greater than or equal to the length")?
         {
             return Err("Permutation contains duplicate elements");
         }

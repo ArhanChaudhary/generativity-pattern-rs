@@ -15,7 +15,7 @@ pub fn compose_into(
     for (result_value, &b_value) in result.iter_mut().zip(b) {
         if *seen_b
             .get(b_value)
-            .ok_or("B contains an element greater than the length")?
+            .ok_or("B contains an element greater than or equal to the length")?
         {
             return Err("B contains duplicate elements");
         }
@@ -24,7 +24,7 @@ pub fn compose_into(
         let a_value = a[b_value];
         if *seen_a
             .get(a_value)
-            .ok_or("A contains an element greater than the length")?
+            .ok_or("A contains an element greater than or equal to the length")?
         {
             return Err("A contains duplicate elements");
         }
