@@ -12,10 +12,10 @@ impl Permutation {
         if self.0.len() != b.0.len() || b.0.len() != result.0.len() {
             return Err("Permutations must have the same length");
         }
-        for (into_value, &b_value) in result.0.iter_mut().zip(&b.0) {
+        for (result_value, &b_value) in result.0.iter_mut().zip(&b.0) {
             // SAFETY: `b` is guaranteed to be a valid permutation
             // whose elements can index `self`
-            *into_value = unsafe { *self.0.get_unchecked(b_value) };
+            *result_value = unsafe { *self.0.get_unchecked(b_value) };
         }
         Ok(())
     }

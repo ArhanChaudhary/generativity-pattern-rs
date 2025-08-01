@@ -12,7 +12,7 @@ pub fn compose_into(
     }
     seen_a.fill(false);
     seen_b.fill(false);
-    for (into_value, &b_value) in result.iter_mut().zip(b) {
+    for (result_value, &b_value) in result.iter_mut().zip(b) {
         if *seen_b
             .get(b_value)
             .ok_or("B contains an element greater than the length")?
@@ -30,7 +30,7 @@ pub fn compose_into(
         }
         seen_a[a_value] = true;
 
-        *into_value = a_value;
+        *result_value = a_value;
     }
     Ok(())
 }

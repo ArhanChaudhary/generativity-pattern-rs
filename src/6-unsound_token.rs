@@ -9,7 +9,7 @@ pub struct PermGroup<Tok> {
 impl<Tok> PermGroup<Tok> {
     /// # Safety
     ///
-    /// Unsafe public API. Use the `new_perm_group!` macro instead.
+    /// Unsafe public API. Use the `new_perm_group` macro instead.
     pub unsafe fn new(
         base_permutation_length: usize,
         base_permutation_mappings: Vec<Vec<usize>>,
@@ -95,6 +95,7 @@ mod tests {
         let first_perm = &perm_groups[0].base_permutations()[0];
         let second_perm = &perm_groups[1].base_permutations()[0];
 
-        first_perm.compose(second_perm); // No compile error, UB!
+        // not rejected, UB!
+        first_perm.compose(second_perm);
     }
 }
