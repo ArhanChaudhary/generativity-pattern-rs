@@ -53,16 +53,16 @@ impl Permutation {
         Ok(permutation)
     }
 
-    pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {
-        if self.1 != b.1 || b.1 != into.1 {
+    pub fn compose_into(&self, b: &Self, result: &mut Self) -> Result<(), &'static str> {
+        if self.1 != b.1 || b.1 != result.1 {
             return Err("Permutations must come from the same permutation group");
         }
-        for i in 0..into.0.len() {
+        for i in 0..result.0.len() {
             // SAFETY: `self`, `b`, and `into` have the same ID.
             // Therefore, they are members of the same group and
             // can be composed.
             unsafe {
-                *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
+                *result.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }
         }
         Ok(())

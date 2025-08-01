@@ -52,10 +52,10 @@ impl<Tok> Permutation<Tok> {
     }
 
     /// See the note in `Permutation::compose`.
-    pub fn compose_into(&self, b: &Permutation<Tok>, into: &mut Permutation<Tok>) {
-        for i in 0..into.0.len() {
+    pub fn compose_into(&self, b: &Permutation<Tok>, result: &mut Permutation<Tok>) {
+        for i in 0..result.0.len() {
             unsafe {
-                *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
+                *result.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }
         }
     }

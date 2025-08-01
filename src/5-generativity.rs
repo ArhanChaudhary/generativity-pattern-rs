@@ -52,14 +52,14 @@ impl<'id> Permutation<'id> {
         Ok(permutation)
     }
 
-    pub fn compose_into(&self, b: &Self, into: &mut Self) {
-        for i in 0..into.0.len() {
+    pub fn compose_into(&self, b: &Self, result: &mut Self) {
+        for i in 0..result.0.len() {
             // SAFETY: `self`, `b`, and `into` have the same
             // lifetime brand. Therefore, they are valid
             // permutations of the same length that uphold any
             // defined invariants when composed.
             unsafe {
-                *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
+                *result.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }
         }
     }

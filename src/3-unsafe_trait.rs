@@ -37,7 +37,7 @@ pub trait ComposablePermutation: Clone {
     ///
     /// `self`, `b`, and `into` must all be from the same
     /// permutation group.
-    unsafe fn compose_into(&self, b: &Self, into: &mut Self);
+    unsafe fn compose_into(&self, b: &Self, result: &mut Self);
 
     /// # Safety
     ///
@@ -58,11 +58,11 @@ impl ComposablePermutation for Permutation {
         Ok(Self(mapping.into_boxed_slice()))
     }
 
-    unsafe fn compose_into(&self, b: &Self, into: &mut Self) {
-        for i in 0..into.0.len() {
+    unsafe fn compose_into(&self, b: &Self, result: &mut Self) {
+        for i in 0..result.0.len() {
             // SAFETY: permutations within the same group can be composed.
             unsafe {
-                *into.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
+                *result.0.get_unchecked_mut(i) = *self.0.get_unchecked(*b.0.get_unchecked(i));
             }
         }
     }

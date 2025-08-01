@@ -8,11 +8,11 @@ impl Permutation {
         Ok(Self(mapping.into_boxed_slice()))
     }
 
-    pub fn compose_into(&self, b: &Self, into: &mut Self) -> Result<(), &'static str> {
-        if self.0.len() != b.0.len() || b.0.len() != into.0.len() {
+    pub fn compose_into(&self, b: &Self, result: &mut Self) -> Result<(), &'static str> {
+        if self.0.len() != b.0.len() || b.0.len() != result.0.len() {
             return Err("Permutations must have the same length");
         }
-        for (into_value, &b_value) in into.0.iter_mut().zip(&b.0) {
+        for (into_value, &b_value) in result.0.iter_mut().zip(&b.0) {
             // SAFETY: `b` is guaranteed to be a valid permutation
             // whose elements can index `self`
             *into_value = unsafe { *self.0.get_unchecked(b_value) };
