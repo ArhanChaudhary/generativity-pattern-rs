@@ -13,6 +13,9 @@ pub mod mod_5_generativity;
 #[path = "6-unsound_token.rs"]
 /// This module is unsound!
 pub mod mod_6_unsound_token;
+// does not compile
+// #[path = "7-nonunifiable_proposal.rs"]
+// pub mod mod_7_nonunifiable_proposal;
 
 pub mod branded_vec;
 pub mod min_generativity;
