@@ -32,10 +32,15 @@ jobs:
       - name: Compile document
         run: typst compile paper/The\ Generativity\ Pattern\ in\ Rust.typ
 
+      - name: Copy paper to web root
+        run: |
+          mkdir www
+          ln paper/The\ Generativity\ Pattern\ in\ Rust.typ www/paper.pdf
+
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v4
         with:
-          path: paper/*.pdf
+          path: www
 
   deploy:
     name: Deploy site
