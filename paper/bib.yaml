@@ -1,0 +1,174 @@
+1:
+  type: web
+  url: https://cliffle.com/blog/rust-typestate/
+2:
+  type: web
+  url: https://plv.mpi-sws.org/rustbelt/ghostcell/
+3:
+  type: web
+  url: https://github.com/kyren/gc-arena/?tab=readme-ov-file#prior-art
+4:
+  type: web
+  url: https://github.com/Manishearth/rust-gc
+5:
+  type: web
+  url: https://cad97.com/
+6:
+  type: web
+  url: https://crates.io/crates/generativity
+7:
+  type: web
+  url: https://en.wikipedia.org/wiki/Permutation_group#Composition_of_permutations–the_group_product
+8:
+  type: web
+  url: https://rust-unofficial.github.io/patterns/patterns/behavioural/newtype.html
+9:
+  type: web
+  url: https://en.wikipedia.org/wiki/Permutation_group
+10:
+  type: web
+  url: https://github.com/ArhanChaudhary/generativity-pattern-rs
+11:
+  type: web
+  url: https://users.rust-lang.org/t/should-i-use-unsafe-merely-to-encourage-users-to-maintain-invariants/27856
+12:
+  type: web
+  url: https://github.com/ogxd/gxhash/issues/82#issuecomment-2257578785
+14:
+  type: web
+  url: https://crates.io/crates/generativity
+15:
+  type: web
+  url: https://github.com/ArhanChaudhary/generativity-pattern-rs/blob/main/src/5-generativity.rs
+16:
+  type: web
+  url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=4675f6eb33925940c51668ee15a00010
+17:
+  type: web
+  url: https://doi.org/10.1007/BF01018827
+18:
+  type: web
+  url: https://github.com/Gankra/thesis/blob/master/thesis.pdf
+19:
+  type: web
+  url: https://plv.mpi-sws.org/rustbelt/ghostcell/
+20:
+  type: web
+  url: https://gitlab.mpi-sws.org/FP/ghostcell/-/blob/master/ghostcell/examples/branded_vec.rs
+21:
+  type: web
+  url: https://en.wikipedia.org/wiki/Parametric_polymorphism#Higher-rank_polymorphism
+22:
+  type: web
+  url: https://doc.rust-lang.org/nomicon/hrtb.html
+23:
+  type: web
+  url: https://github.com/Gankra/thesis/blob/master/thesis.pdf
+24:
+  type: web
+  url: https://plv.mpi-sws.org/rustbelt/ghostcell/
+25:
+  type: web
+  url: https://github.com/ArhanChaudhary/generativity-pattern-rs/commit/806c8bef89b1d0c0621db42c130856bf33fffb9f
+26:
+  type: web
+  url: https://stackoverflow.com/users/865874/rodrigo
+27:
+  type: web
+  url: https://stackoverflow.com/a/76876800
+28:
+  type: web
+  url: https://github.com/ArhanChaudhary/generativity-pattern-rs/blob/main/src/6-unsound_token.rs
+29:
+  type: web
+  url: https://codeberg.org/binarycat/typetoken/src/branch/trunk/src/lib.rs
+30:
+  type: web
+  url: https://codeberg.org/binarycat
+31:
+  type: web
+  url: https://crates.io/crates/typetoken
+32:
+  type: web
+  url: https://github.com/rust-lang/rfcs/pull/2040#issuecomment-317275303
+33:
+  type: web
+  url: https://godbolt.org/z/4h4xccfjT
+34:
+  type: web
+  url: https://doc.rust-lang.org/nomicon/subtyping.html#variance
+35:
+  type: web
+  url: https://doc.rust-lang.org/nomicon/phantom-data.html#table-of-phantomdata-patterns
+36:
+  type: web
+  url: https://github.com/rust-lang/rust/issues/135806
+37:
+  type: web
+  url: https://github.com/rust-lang/rfcs/pull/3417#pullrequestreview-1396551771
+38:
+  type: web
+  url: https://doc.rust-lang.org/std/ops/trait.Drop.html#drop-check
+39:
+  type: web
+  url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=649d51907c2612c310eb627a0c863399
+40:
+  type: web
+  url: https://hackmd.io/h9YBnIbaRSCD7Ej6hUpF_w
+41:
+  type: web
+  url: https://doc.rust-lang.org/std/ops/trait.Drop.html#drop-check
+42:
+  type: web
+  url: https://rust-lang.github.io/rfcs/1327-dropck-param-eyepatch.html
+43:
+  type: web
+  url: https://rust-lang.github.io/rfcs/1238-nonparametric-dropck.html#unguarded-escape-hatch
+44:
+  type: web
+  url: https://rust-lang.zulipchat.com/#narrow/stream/144729-t-types/topic/Perma-unstable.20status.20of.20.60.23.5Bmay_dangle.5D.60
+45:
+  type: web
+  url: https://github.com/rust-lang/rust/issues/76367
+46:
+  type: web
+  url: https://github.com/rust-lang/rust/issues/99408
+47:
+  type: web
+  url: https://doc.rust-lang.org/nomicon/dropck.html#an-escape-hatch
+48:
+  type: web
+  url: https://github.com/rust-lang/rfcs/pull/3417
+49:
+  type: web
+  url: https://crates.io/crates/scopeguard
+50:
+  type: web
+  url: https://docs.rs/scopeguard/latest/src/scopeguard/lib.rs.html#287
+51:
+  type: web
+  url: https://github.com/rust-lang/rust/issues/91377#issuecomment-993875185
+52:
+  type: web
+  url: https://blog.rust-lang.org/2022/08/05/nll-by-default/
+53:
+  type: web
+  url: https://github.com/rust-lang/polonius
+54:
+  type: web
+  url: https://rust.godbolt.org/z/vhMjKGbz3
+55:
+  type: web
+  url: https://github.com/rust-lang/rust/pull/139080
+56:
+  type: web
+  url: https://blog.m-ou.se/super-let#a-potential-extension
+57:
+  type: web
+  url: https://github.com/ArhanChaudhary/generativity-pattern-rs/blob/main/src/7-nonunifiable_proposal.rs
+58:
+  type: web
+  url: https://play.rust-lang.org/?version=stable&mode=debug&edition=2024&gist=47b36de838eaeeebe236e2f3b4aa279b
+59:
+  type: web
+  url: https://github.com/CAD97/generativity/pull/16
